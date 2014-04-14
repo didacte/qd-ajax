@@ -37,8 +37,20 @@ define("ic-ajax",
       return makePromise(parseArgs.apply(null, arguments));
     }
 
-    __exports__.raw = raw;var __fixtures__ = {};
+    __exports__.raw = raw;var __fixtures__;
     __exports__.__fixtures__ = __fixtures__;
+    /**
+     * Create new fixtures container
+     */
+    function resetFixtures() {
+      __fixtures__ = new RouteRecognizer();
+    }
+
+    __exports__.resetFixtures = resetFixtures;/**
+     * Create a new fixtures container on initial run
+     */
+    resetFixtures();
+
     /*
      * Defines a fixture that will be used instead of an actual ajax
      * request to a given url. This is useful for testing, allowing you to
@@ -58,7 +70,16 @@ define("ic-ajax",
      */
 
     function defineFixture(url, fixture) {
-      __fixtures__[url] = JSON.parse(JSON.stringify(fixture));
+      var callback;
+
+      if (Em.typeOf(fixture) === 'function') {
+        callback = fixture;
+      } else {
+        fixture = JSON.parse(JSON.stringify(fixture));
+        callback = function() { return fixture; }
+      }
+
+      __fixtures__.add([{path: url, handler: callback}]);
     }
 
     __exports__.defineFixture = defineFixture;/*
@@ -67,13 +88,19 @@ define("ic-ajax",
      * @param {String} url
      */
 
-    function lookupFixture (url) {
-      return __fixtures__ && __fixtures__[url];
+    function lookupFixture(url, request) {
+      var matched = __fixtures__.recognize(url);
+      if (matched && matched.length > 0) {
+        var route = matched[0];
+        var params = Em.merge(route.params, matched.queryParams || {});
+        return route.handler.call(null, request, params);
+      }
+      return null;
     }
 
     __exports__.lookupFixture = lookupFixture;function makePromise(settings) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
-        var fixture = lookupFixture(settings.url);
+        var fixture = lookupFixture(settings.url, settings);
         if (fixture) {
           if (fixture.textStatus === 'success') {
             return Ember.run(null, resolve, fixture);

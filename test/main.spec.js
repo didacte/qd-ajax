@@ -1,4 +1,8 @@
-module('ic-ajax');
+module('ic-ajax', {
+  teardown: function() {
+    ic.ajax.resetFixtures();
+  }
+});
 
 test('presence', function() {
   ok(ic.ajax, 'ic.ajax is defined');
@@ -101,6 +105,43 @@ test('throws if success or error callbacks are used', function() {
   });
   throws(function() {
     ic.ajax('/foo', { success: k, error: k });
+  });
+});
+
+asyncTest('fixture can be function that returns fixtures', function(){
+  expect(1);
+  ic.ajax.defineFixture('/foo', function(){
+    return {
+      response: { foo: 'bar'},
+      textStatus: 'success',
+      jqXHR: {}
+    };
+  });
+
+  ic.ajax.request('/foo').then(function(result) {
+      start();
+      deepEqual(result.foo, 'bar');
+    }
+  )
+});
+
+asyncTest('query params are available inside of fixture functions', function(){
+  expect(2);
+  ic.ajax.defineFixture('/foo', function(request, params){
+    return {
+      response: { meta: { page: params.page || 1 }},
+      textStatus: 'success',
+      jqXHR: {}
+    };
+  });
+
+  Em.RSVP.hash({
+    page1: ic.ajax.request('/foo'),
+    page2: ic.ajax.request('/foo?page=2')
+  }).then(function(result){
+    start();
+    equal(result.page1.meta.page, 1);
+    equal(result.page2.meta.page, 2);
   });
 });
 

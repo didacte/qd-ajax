@@ -4,10 +4,11 @@ module.exports = function(config) {
     frameworks: ['qunit'],
 
     files: [
-      'bower_components/jquery/jquery.js',
-      'bower_components/handlebars/handlebars.js',
-      'bower_components/ember/ember.js',
-      'bower_components/sinon/index.js',
+      'vendor/jquery/dist/jquery.js',
+      'vendor/handlebars/handlebars.js',
+      'vendor/ember/ember.js',
+      'vendor/route-recognizer/index.js',
+      'vendor/sinon/index.js',
       'dist/globals/main.js',
       // when running broccoli serve, we use this instead
       'http://localhost:4200/globals/main.js',
