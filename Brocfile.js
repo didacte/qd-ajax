@@ -4,7 +4,8 @@ module.exports = function(broccoli) {
     packageName: 'ic-ajax',
     main: 'main',
     shim: {
-      'ember': 'Ember'
+      'ember': 'Ember',
+      'route-recognizer': 'RouteRecognizer'
     }
   });
 };

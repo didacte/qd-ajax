@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "ember": ">=1.2 <2",
-    "route-recognizer": "https://raw.githubusercontent.com/tildeio/route-recognizer/fe8d680a6356d8c267cdc49846751e9a5b80945d/dist/route-recognizer.js"
+    "route-recognizer": "git+https://github.com/tildeio/route-recognizer#fe8d680a6356d8c267cdc49846751e9a5b80945d"
   },
   "devDependencies": {
     "sinon": "http://sinonjs.org/releases/sinon-1.7.3.js"

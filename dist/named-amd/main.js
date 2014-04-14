@@ -1,6 +1,6 @@
 define("ic-ajax",
-  ["ember","exports"],
-  function(__dependency1__, __exports__) {
+  ["ember","route-recognizer","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     /*!
      * ic-ajax
@@ -11,6 +11,7 @@ define("ic-ajax",
      */
 
     var Ember = __dependency1__["default"] || __dependency1__;
+    var RouteRecognizer = __dependency2__["default"] || __dependency2__;
 
     /*
      * jQuery.ajax wrapper, supports the same signature except providing

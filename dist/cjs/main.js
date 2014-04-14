@@ -8,6 +8,7 @@
  */
 
 var Ember = require("ember")["default"] || require("ember");
+var RouteRecognizer = require("route-recognizer")["default"] || require("route-recognizer");
 
 /*
  * jQuery.ajax wrapper, supports the same signature except providing

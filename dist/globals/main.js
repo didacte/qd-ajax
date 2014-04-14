@@ -9,6 +9,7 @@
  */
 
 var Ember = window.Ember["default"] || window.Ember;
+var RouteRecognizer = window.RouteRecognizer["default"] || window.RouteRecognizer;
 
 /*
  * jQuery.ajax wrapper, supports the same signature except providing
