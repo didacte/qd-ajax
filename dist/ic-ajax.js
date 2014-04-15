@@ -212,7 +212,8 @@ define("ic-ajax",
       var matched = __fixtures__.recognize(url);
       if (matched && matched.length > 0) {
         var route = matched[0];
-        var params = Em.merge(route.params, matched.queryParams || {});
+        // merge route parameters, route query parameters and request data
+        var params = Em.merge(route.params, matched.queryParams || {}, (request || {}).data);
         return route.handler.call(null, request, params);
       }
       return null;
