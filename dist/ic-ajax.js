@@ -214,7 +214,7 @@ define("ic-ajax",
         var route = matched[0];
         // merge route parameters, route query parameters and request data
         var params = Em.merge(route.params, matched.queryParams || {}, (request || {}).data);
-        return route.handler.call(null, request, params);
+        return route.handler.call(null, params, request);
       }
       return null;
     }

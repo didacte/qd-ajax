@@ -127,7 +127,7 @@ asyncTest('fixture can be function that returns fixtures', function(){
 
 asyncTest('query params are available inside of fixture functions', function(){
   expect(2);
-  ic.ajax.defineFixture('/foo', function(request, params){
+  ic.ajax.defineFixture('/foo', function(params){
     return {
       response: { meta: { page: params.page || 1 }},
       textStatus: 'success',
