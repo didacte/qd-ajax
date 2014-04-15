@@ -47,11 +47,24 @@ define("ic-ajax",
     }
 
     __exports__.resetFixtures = resetFixtures;/**
-     * Create a new fixtures container on initial run
+     * Load fixtures from AMD modules starting with prefix
+     * @param prefix
      */
-    resetFixtures();
+    function loadFixtures(prefix) {
+      if (requireModule) {
+        for (var key in requireModule.entries) {
+          if (key !== prefix + '/_loader' && new RegExp('^' + prefix + '\/').test(key)) {
+            var url = key.replace(prefix + '/', '');
+            var fixture = requireModule(key).default;
+            if (fixture) {
+              defineFixture(url, fixture);
+            }
+          }
+        }
+      }
+    }
 
-    /*
+    __exports__.loadFixtures = loadFixtures;/*
      * Defines a fixture that will be used instead of an actual ajax
      * request to a given url. This is useful for testing, allowing you to
      * stub out responses your application will send without requiring
@@ -72,6 +85,10 @@ define("ic-ajax",
     function defineFixture(url, fixture) {
       var callback;
 
+      if (typeof __fixtures__ === 'undefined') {
+        resetFixtures();
+      }
+
       if (Em.typeOf(fixture) === 'function') {
         callback = fixture;
       } else {
@@ -89,6 +106,11 @@ define("ic-ajax",
      */
 
     function lookupFixture(url, request) {
+
+      if (typeof __fixtures__ === 'undefined') {
+        return null;
+      }
+
       var matched = __fixtures__.recognize(url);
       if (matched && matched.length > 0) {
         var route = matched[0];
