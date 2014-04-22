@@ -1,7 +1,7 @@
-ic-ajax
+qd-ajax
 =======
 
-[![Build Status](https://travis-ci.org/instructure/ic-ajax.png)](https://travis-ci.org/instructure/ic-ajax)
+[![Build Status](https://travis-ci.org/instructure/qd-ajax.png)](https://travis-ci.org/instructure/qd-ajax)
 
 Ember-friendly `jQuery.ajax` wrapper.
 
@@ -12,11 +12,11 @@ Ember-friendly `jQuery.ajax` wrapper.
 Installation
 ------------
 
-`bower install ic-ajax`
+`bower install qd-ajax`
 
 ... or ...
 
-`npm install ic-ajax`
+`npm install qd-ajax`
 
 Module Support
 --------------
@@ -26,11 +26,11 @@ works best for you.
 
 - AMD
 
-  `define(['ic-ajax'], function(ajax) {});`
+  `define(['qd-ajax'], function(ajax) {});`
 
 - Node.JS (CJS)
 
-  `var ajax = require('ic-ajax')`
+  `var ajax = require('qd-ajax')`
 
 - Globals
 
@@ -71,11 +71,11 @@ ajax.raw('/foo').then(function(result) {
 Ember Data
 ------------------
 
-By default, if Ember Data is on the page, ic-ajax will override the
-`RESTAdapter`'s `ajax` method to use ic-ajax instead of jQuery's ajax.
+By default, if Ember Data is on the page, qd-ajax will override the
+`RESTAdapter`'s `ajax` method to use qd-ajax instead of jQuery's ajax.
 
 To opt out of the behavior, you can set `ic.ajax.request.OVERRIDE_REST_ADAPTER = false`
-after loading ic-ajax.
+after loading qd-ajax.
 
 Simplified Testing
 ------------------
@@ -86,7 +86,7 @@ In order to test newly added code you must rebuild the distribution.
 broccoli build dist
 ```
 
-Adding fixtures with `defineFixture` tells ic-ajax to resolve the promise
+Adding fixtures with `defineFixture` tells qd-ajax to resolve the promise
 with the fixture matching a url instead of making a request. This allows
 you to test your app without creating fake servers with sinon, etc.
 
@@ -126,15 +126,16 @@ npm run-script release
 Special Thanks
 --------------
 
-Inspired by [discourse ajax][1].
+Forked from [ic-ajax by Instructure][2].
+Original code inspired by [discourse ajax][1].
 
 License and Copyright
 ---------------------
 
 MIT Style license
 
-(c) 2014 Instructure, Inc.
+(c) 2014 Quandl Inc.
 
 
   [1]:https://github.com/discourse/discourse/blob/master/app/assets/javascripts/discourse/mixins/ajax.js#L19
-
+  [2]:https://github.com/instructure/ic-ajax

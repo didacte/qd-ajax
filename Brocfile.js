@@ -11,7 +11,7 @@ function getModuleName(filePath) {
 
 var lib = 'lib';
 
-var transpiledLib = transpileES6(lib, { moduleName: 'ic-ajax' });
+var transpiledLib = transpileES6(lib, { moduleName: 'qd-ajax' });
 
 var bower = path.join(__dirname, 'bower_components');
 var routeRecognizer = pickFiles(bower, {
@@ -24,15 +24,15 @@ var mergedTrees = mergeTrees([transpiledLib, routeRecognizer]);
 
 var concatedFiles = concatFiles(mergedTrees, {
   inputFiles: ['**/*.js'],
-  outputFile: '/ic-ajax.amd.js'
+  outputFile: '/qd-ajax.amd.js'
 });
 
 var globalizedAMD = globalizeAMD(concatFiles(mergedTrees, {
   inputFiles: ['**/*.js'],
-  outputFile: '/ic-ajax.js'
+  outputFile: '/qd-ajax.js'
 }), {
   namespace: 'ic = (global.ic || {}); global.ic.ajax',
-  moduleName: 'ic-ajax'
+  moduleName: 'qd-ajax'
 });
 
 module.exports = mergeTrees([globalizedAMD, concatedFiles]);

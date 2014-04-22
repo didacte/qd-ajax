@@ -9,9 +9,9 @@ module.exports = function(config) {
       'bower_components/ember/ember.js',
       'bower_components/route-recognizer/dist/route-recognizer.js',
       'bower_components/sinon/index.js',
-      'dist/ic-ajax.js',
+      'dist/qd-ajax.js',
       // when running broccoli serve, we use this instead
-      'http://localhost:4200/ic-ajax.js',
+      'http://localhost:4200/qd-ajax.js',
       'test/**/*.spec.js'
     ],
 

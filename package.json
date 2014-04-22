@@ -1,8 +1,8 @@
 {
-  "name": "ic-ajax",
-  "version": "1.0.4",
+  "name": "qd-ajax",
+  "version": "1.1.0",
   "description": "ember friendly $.ajax wrapper",
-  "main": "dist/cjs/main.js",
+  "main": "lib/concat-fixtures",
   "devDependencies": {
     "broccoli": "^0.9.0",
     "broccoli-cli": "0.0.1",
@@ -26,17 +26,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/instructure/ic-ajax.git"
+    "url": "https://github.com/quandl/qd-ajax.git"
   },
   "keywords": [
     "ember",
     "ajax"
   ],
-  "author": "Ryan Florence",
+  "author": "Taras Mankovski (forked from ic-ajax by Ryan Florence)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/instructure/ic-ajax/issues"
+    "url": "https://github.com/quandl/qd-ajax/issues"
   },
-  "homepage": "https://github.com/instructure/ic-ajax",
-  "dependencies": {}
+  "homepage": "https://github.com/quandl/qd-ajax",
+  "dependencies": {
+    "broccoli-static-compiler": "^0.1.4",
+    "broccoli-merge-trees": "^0.1.3",
+    "broccoli-es6-concatenator": "^0.1.4",
+    "quick-temp": "^0.1.1",
+    "fixturify": "^0.1.1"
+  }
 }

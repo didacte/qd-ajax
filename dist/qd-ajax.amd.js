@@ -1,12 +1,54 @@
-define("ic-ajax",
+define("qd-ajax",
+  [],
+  function() {
+    "use strict";
+    module.exports = function(tree, moduleName, outputFile) {
+      var pickFiles = require('broccoli-static-compiler');
+      var mergeTrees = require('broccoli-merge-trees');
+      var compileES6 = require('broccoli-es6-concatenator');
+      var quickTemp = require('quick-temp');
+      var fixturify = require('fixturify')
+
+      var fixtures = pickFiles(tree, {
+        srcDir: '/',
+        files: ['**/*.js'],
+        destDir: '/' + moduleName
+      });
+
+      quickTemp.makeOrRemake(this, 'loaderDir');
+
+      fixturify.writeSync(this.loaderDir, {
+        '_loader.js': '// Hack for  https://github.com/joliss/broccoli-es6-concatenator/issues/9'
+      });
+
+      var loader = pickFiles(this.loaderDir, {
+        srcDir: '/',
+        files: ['_loader.js'],
+        destDir: '/' + moduleName
+      });
+
+      fixturesJs = compileES6(mergeTrees([fixtures, loader]), {
+        loaderFile: moduleName + '/_loader.js',
+        ignoreModules: [],
+        inputFiles: ['**/*.js'],
+        legacyFilesToAppend: [],
+        wrapInEval: true,
+        outputFile: outputFile
+      });
+
+      return fixturesJs;
+    };
+  });
+define("qd-ajax",
   ["route-recognizer","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
     /*!
-     * ic-ajax
+     * qd-ajax
      *
-     * - (c) 2013 Instructure, Inc
-     * - please see license at https://github.com/instructure/ic-ajax/blob/master/LICENSE
+     * - (c) 2014 Quandl, Inc
+     * - please see license at https://github.com/quandl/qd-ajax/blob/master/LICENSE
+     * - forked of instructure/ic-ajax: https://github.com/instructure/ic-ajax
      * - inspired by discourse ajax: https://github.com/discourse/discourse/blob/master/app/assets/javascripts/discourse/mixins/ajax.js#L19
      */
 
@@ -21,7 +63,7 @@ define("ic-ajax",
     function request() {
       return raw.apply(null, arguments).then(function(result) {
         return result.response;
-      }, null, 'ic-ajax: unwrap raw ajax response');
+      }, null, 'qd-ajax: unwrap raw ajax response');
     }
 
     __exports__.request = request;request.OVERRIDE_REST_ADAPTER = true;
@@ -135,7 +177,7 @@ define("ic-ajax",
         settings.success = makeSuccess(resolve);
         settings.error = makeError(reject);
         Ember.$.ajax(settings);
-      }, 'ic-ajax: ' + (settings.type || 'GET') + ' to ' + settings.url);
+      }, 'qd-ajax: ' + (settings.type || 'GET') + ' to ' + settings.url);
     };
 
     function parseArgs() {
@@ -179,7 +221,7 @@ define("ic-ajax",
     if (typeof window.DS !== 'undefined'){
       Ember.onLoad('Ember.Application', function(Application){
         Application.initializer({
-          name: 'ic-ajax_REST_Adapter',
+          name: 'qd-ajax_REST_Adapter',
           after: 'store',
           initialize: function(container, application){
             if (request.OVERRIDE_REST_ADAPTER) {
