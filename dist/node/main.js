@@ -3,7 +3,7 @@ module.exports = function(tree, moduleName, outputFile) {
   var mergeTrees = require('broccoli-merge-trees');
   var compileES6 = require('broccoli-es6-concatenator');
   var quickTemp = require('quick-temp');
-  var fixturify = require('fixturify')
+  var fixturify = require('fixturify');
 
   var fixtures = pickFiles(tree, {
     srcDir: '/',
