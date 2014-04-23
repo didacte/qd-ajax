@@ -91,7 +91,9 @@ define("qd-ajax",
       }
 
       if (Em.typeOf(fixture) === 'function') {
-        callback = fixture;
+        callback =  function () {
+          return JSON.parse(JSON.stringify(fixture.apply(null, arguments)));
+        };
       } else {
         fixture = JSON.parse(JSON.stringify(fixture));
         callback = function() { return fixture; }
