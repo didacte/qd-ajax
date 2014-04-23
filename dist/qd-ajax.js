@@ -154,9 +154,9 @@ define("qd-ajax",
         for (var key in requireModule.entries) {
           if (key !== prefix + '/_loader' && new RegExp('^' + prefix + '\/').test(key)) {
             var url = key.replace(prefix + '/', '');
-            var fixture = requireModule(key).default;
-            if (fixture) {
-              defineFixture(url, fixture);
+            var module = requireModule(key);
+            if (module && module.default) {
+              defineFixture(url, module.default);
             }
           }
         }
@@ -189,7 +189,7 @@ define("qd-ajax",
       }
 
       if (Em.typeOf(fixture) === 'function') {
-        callback =  function () {
+        callback =  function() {
           return JSON.parse(JSON.stringify(fixture.apply(null, arguments)));
         };
       } else {
