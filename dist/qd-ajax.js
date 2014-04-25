@@ -193,8 +193,12 @@ define("qd-ajax",
           return JSON.parse(JSON.stringify(fixture.apply(null, arguments)));
         };
       } else {
+        // Satisfy some legacy behavior that a fixture cannot be
+        // modified after definition time.
         fixture = JSON.parse(JSON.stringify(fixture));
-        callback = function() { return fixture; }
+        callback = function() {
+          return JSON.parse(JSON.stringify(fixture));
+        }
       }
 
       __fixtures__.add([{path: url, handler: callback}]);
