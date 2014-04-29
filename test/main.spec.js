@@ -78,7 +78,7 @@ asyncTest('url and settings arguments', function() {
 });
 
 asyncTest('A JSON fixture is unaffected by external change', function() {
-  var resource = {foo: 'bar'};
+  var resource = {foo: 'bar'}, result;
 
   ic.ajax.defineFixture('/foo', {
     response: {resource: resource},
@@ -88,11 +88,15 @@ asyncTest('A JSON fixture is unaffected by external change', function() {
 
   resource.foo = 'baz';
 
-  ic.ajax.request('/foo').then(function(result) {
-      start();
-      deepEqual(result.resource.foo, 'bar');
-    }
-  )
+  ic.ajax.request('/foo').then(function(_result) {
+    result = _result;
+    notStrictEqual(result.resource, resource);
+    deepEqual(result.resource.foo, 'bar');
+    return ic.ajax.request('/foo');
+  }).then(function(secondResult) {
+    notStrictEqual(result.resource, secondResult.resource);
+    start();
+  });
 });
 
 asyncTest('A function fixture is unaffected by subsequent change', function() {
@@ -107,10 +111,9 @@ asyncTest('A function fixture is unaffected by subsequent change', function() {
 
   ic.ajax.defineFixture('/foo', fixture);
 
-
   ic.ajax.request('/foo').then(function(result) {
       start();
-      deepEqual(result.resource.foo, 'bar');
+      deepEqual(result.resource.foo, resource.foo);
       notStrictEqual(result.resource, resource);
     }
   );
