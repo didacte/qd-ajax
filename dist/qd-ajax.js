@@ -930,5 +930,5 @@ define("route-recognizer",
     };
   });
 /* End concatenated AMD modules */
-global.ic = (global.ic || {}); global.ic.ajax = require('qd-ajax');
+global.qd = (global.qd || {}); global.qd.ajax = require('qd-ajax');
 })( (function() { return this; })() );

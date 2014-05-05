@@ -1,55 +1,55 @@
 module('qd-ajax', {
   teardown: function() {
-    ic.ajax.resetFixtures();
+    qd.ajax.resetFixtures();
   }
 });
 
 test('presence', function() {
-  ok(ic.ajax, 'ic.ajax is defined');
+  ok(qd.ajax, 'qd.ajax is defined');
 });
 
 asyncTest('pulls from fixtures', function() {
-  ic.ajax.defineFixture('/get', {
+  qd.ajax.defineFixture('/get', {
     response: { foo: 'bar' },
     textStatus: 'success',
     jqXHR: {}
   });
 
-  ic.ajax.raw('/get').then(function(result) {
+  qd.ajax.raw('/get').then(function(result) {
     start();
-    deepEqual(result, ic.ajax.lookupFixture('/get'));
+    deepEqual(result, qd.ajax.lookupFixture('/get'));
   });
 });
 
 asyncTest('rejects the promise when the textStatus of the fixture is not success', function() {
-  ic.ajax.defineFixture('/post', {
+  qd.ajax.defineFixture('/post', {
     errorThrown: 'Unprocessable Entity',
     textStatus: 'error',
     jqXHR: {}
   });
 
   start();
-  ic.ajax.raw('/post').then(null, function(reason) {
-    deepEqual(reason, ic.ajax.lookupFixture('/post'));
+  qd.ajax.raw('/post').then(null, function(reason) {
+    deepEqual(reason, qd.ajax.lookupFixture('/post'));
   });
 });
 
 asyncTest('resolves the response only when not using raw', function() {
-  ic.ajax.defineFixture('/get', {
+  qd.ajax.defineFixture('/get', {
     response: { foo: 'bar' },
     textStatus: 'success',
     jqXHR: {}
   });
 
-  ic.ajax.request('/get').then(function(result) {
+  qd.ajax.request('/get').then(function(result) {
     start();
-    deepEqual(result, ic.ajax.lookupFixture('/get').response);
+    deepEqual(result, qd.ajax.lookupFixture('/get').response);
   });
 });
 
 asyncTest('url as only argument', function() {
   var server = fakeServer('GET', '/foo', {foo: 'bar'});
-  ic.ajax.raw('/foo').then(function(result) {
+  qd.ajax.raw('/foo').then(function(result) {
     start();
     deepEqual(result.response, {foo: 'bar'});
   });
@@ -59,7 +59,7 @@ asyncTest('url as only argument', function() {
 
 asyncTest('settings as only argument', function() {
   var server = fakeServer('GET', '/foo', {foo: 'bar'});
-  ic.ajax.raw({url: '/foo'}).then(function(result) {
+  qd.ajax.raw({url: '/foo'}).then(function(result) {
     start();
     deepEqual(result.response, {foo: 'bar'});
   });
@@ -69,7 +69,7 @@ asyncTest('settings as only argument', function() {
 
 asyncTest('url and settings arguments', function() {
   var server = fakeServer('GET', '/foo?baz=qux', {foo: 'bar'});
-  ic.ajax.raw('/foo', {data: {baz: 'qux'}}).then(function(result) {
+  qd.ajax.raw('/foo', {data: {baz: 'qux'}}).then(function(result) {
     start();
     deepEqual(result.response, {foo: 'bar'});
   });
@@ -80,7 +80,7 @@ asyncTest('url and settings arguments', function() {
 asyncTest('A JSON fixture is unaffected by external change', function() {
   var resource = {foo: 'bar'}, result;
 
-  ic.ajax.defineFixture('/foo', {
+  qd.ajax.defineFixture('/foo', {
     response: {resource: resource},
     textStatus: 'success',
     jqXHR: {}
@@ -88,11 +88,11 @@ asyncTest('A JSON fixture is unaffected by external change', function() {
 
   resource.foo = 'baz';
 
-  ic.ajax.request('/foo').then(function(_result) {
+  qd.ajax.request('/foo').then(function(_result) {
     result = _result;
     notStrictEqual(result.resource, resource);
     deepEqual(result.resource.foo, 'bar');
-    return ic.ajax.request('/foo');
+    return qd.ajax.request('/foo');
   }).then(function(secondResult) {
     notStrictEqual(result.resource, secondResult.resource);
     start();
@@ -105,13 +105,13 @@ asyncTest('A function fixture is unaffected by subsequent change', function() {
     return {
       response: {resource: resource},
       textStatus: 'success',
-      jqXHR: {},
+      jqXHR: {}
     };
   };
 
-  ic.ajax.defineFixture('/foo', fixture);
+  qd.ajax.defineFixture('/foo', fixture);
 
-  ic.ajax.request('/foo').then(function(result) {
+  qd.ajax.request('/foo').then(function(result) {
       start();
       deepEqual(result.resource.foo, resource.foo);
       notStrictEqual(result.resource, resource);
@@ -122,19 +122,19 @@ asyncTest('A function fixture is unaffected by subsequent change', function() {
 test('throws if success or error callbacks are used', function() {
   var k = function() {};
   throws(function() {
-    ic.ajax('/foo', { success: k });
+    qd.ajax('/foo', { success: k });
   });
   throws(function() {
-    ic.ajax('/foo', { error: k });
+    qd.ajax('/foo', { error: k });
   });
   throws(function() {
-    ic.ajax('/foo', { success: k, error: k });
+    qd.ajax('/foo', { success: k, error: k });
   });
 });
 
 asyncTest('fixture can be function that returns fixtures', function(){
   expect(1);
-  ic.ajax.defineFixture('/foo', function(){
+  qd.ajax.defineFixture('/foo', function(){
     return {
       response: { foo: 'bar'},
       textStatus: 'success',
@@ -142,7 +142,7 @@ asyncTest('fixture can be function that returns fixtures', function(){
     };
   });
 
-  ic.ajax.request('/foo').then(function(result) {
+  qd.ajax.request('/foo').then(function(result) {
       start();
       deepEqual(result.foo, 'bar');
     }
@@ -151,7 +151,7 @@ asyncTest('fixture can be function that returns fixtures', function(){
 
 asyncTest('query params are available inside of fixture functions', function(){
   expect(2);
-  ic.ajax.defineFixture('/foo', function(params){
+  qd.ajax.defineFixture('/foo', function(params){
     return {
       response: { meta: { page: params.page || 1 }},
       textStatus: 'success',
@@ -160,8 +160,8 @@ asyncTest('query params are available inside of fixture functions', function(){
   });
 
   Em.RSVP.hash({
-    page1: ic.ajax.request('/foo'),
-    page2: ic.ajax.request('/foo?page=2')
+    page1: qd.ajax.request('/foo'),
+    page2: qd.ajax.request('/foo?page=2')
   }).then(function(result){
     start();
     equal(result.page1.meta.page, 1);
@@ -175,12 +175,12 @@ if (parseFloat(Ember.VERSION) >= 1.3) {
   }
 
   test('labels the promise', function() {
-    var promise = ic.ajax.request('/foo');
+    var promise = qd.ajax.request('/foo');
     equal(promiseLabelOf(promise), 'qd-ajax: unwrap raw ajax response', 'promise is labeled');
   });
 
   test('labels the promise', function() {
-    var promise = ic.ajax.raw('/foo');
+    var promise = qd.ajax.raw('/foo');
     equal(promiseLabelOf(promise), 'qd-ajax: GET to /foo', 'promise is labeled');
   });
 }

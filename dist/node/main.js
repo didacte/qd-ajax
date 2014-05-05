@@ -23,7 +23,7 @@ module.exports = function(tree, moduleName, outputFile) {
     destDir: '/' + moduleName
   });
 
-  fixturesJs = compileES6(mergeTrees([fixtures, loader]), {
+  var fixturesJs = compileES6(mergeTrees([fixtures, loader]), {
     loaderFile: moduleName + '/_loader.js',
     ignoreModules: [],
     inputFiles: ['**/*.js'],

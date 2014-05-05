@@ -34,7 +34,7 @@ works best for you.
 
 - Globals
 
-  `var ajax = ic.ajax;`
+  `var ajax = qd.ajax;`
 
   All instructure canvas stuff lives on the `ic` global.
 
@@ -52,7 +52,7 @@ This lib simply wraps `jQuery.ajax` with two exceptions:
 Other than that, use `request` exactly like `$.ajax`.
 
 ```js
-var ajax = ic.ajax;
+var ajax = qd.ajax;
 
 App.ApplicationRoute = Ember.Route.extend({
   model: function() {
@@ -93,14 +93,14 @@ you to test your app without creating fake servers with sinon, etc.
 Example:
 
 ```js
-ic.ajax.defineFixture('api/v1/courses', {
+qd.ajax.defineFixture('api/v1/courses', {
   response: [{name: 'basket weaving'}],
   jqXHR: {},
   textStatus: 'success'
 });
 
-ic.ajax.request('api/v1/courses').then(function(result) {
-  deepEqual(result, ic.ajax.lookupFixture('api/v1/courses').response);
+qd.ajax.request('api/v1/courses').then(function(result) {
+  deepEqual(result, qd.ajax.lookupFixture('api/v1/courses').response);
 });
 ```
 

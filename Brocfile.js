@@ -38,7 +38,7 @@ var globalizedAMD = globalizeAMD(concatFiles(mergedTrees, {
   inputFiles: ['**/*.js'],
   outputFile: '/qd-ajax.js'
 }), {
-  namespace: 'ic = (global.ic || {}); global.ic.ajax',
+  namespace: 'qd = (global.qd || {}); global.qd.ajax',
   moduleName: 'qd-ajax'
 });
 
