@@ -92,7 +92,12 @@ define("qd-ajax",
 
       if (Em.typeOf(fixture) === 'function') {
         callback =  function() {
-          return JSON.parse(JSON.stringify(fixture.apply(null, arguments)));
+          var result = fixture.apply(null, arguments);
+          if (typeof result !== 'undefined') {
+            return JSON.parse(JSON.stringify(result));
+          } else {
+            return null;
+          }
         };
       } else {
         // Satisfy some legacy behavior that a fixture cannot be

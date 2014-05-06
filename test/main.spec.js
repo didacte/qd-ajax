@@ -169,6 +169,24 @@ asyncTest('query params are available inside of fixture functions', function(){
   });
 });
 
+asyncTest('Return undefined to skip fixture', function(){
+  expect(1);
+
+  qd.ajax.defineFixture('/foo', function(params){
+    // returns undefined
+  });
+
+  var server = fakeServer('GET', '/foo', {foo: 'bar'});
+  qd.ajax.request('/foo')
+    .then(function(result){
+      start();
+      equal(result.foo, 'bar');
+    });
+
+  server.respond();
+  server.restore();
+});
+
 if (parseFloat(Ember.VERSION) >= 1.3) {
   function promiseLabelOf(promise) {
     return promise._label;
