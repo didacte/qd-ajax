@@ -147,16 +147,20 @@ define("qd-ajax",
 
     __exports__.resetFixtures = resetFixtures;/**
      * Load fixtures from AMD modules starting with prefix
-     * @param prefix
+     * @param {string} moduleName
+     * @param {string} namespace
      */
-    function loadFixtures(prefix) {
+    function loadFixtures(moduleName, namespace) {
+      if (typeof namespace === 'undefined') {
+        namespace = '';
+      }
       if (requireModule) {
         for (var key in requireModule.entries) {
-          if (key !== prefix + '/_loader' && new RegExp('^' + prefix + '\/').test(key)) {
-            var url = key.replace(prefix + '/', '');
+          if (key !== moduleName + '/_loader' && new RegExp('^' + moduleName + '\/').test(key)) {
+            var url = key.replace(moduleName + '/', '');
             var module = requireModule(key);
             if (module && module.default) {
-              defineFixture(url, module.default);
+              defineFixture(namespace + '/' + url, module.default);
             }
           }
         }
