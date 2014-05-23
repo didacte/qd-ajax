@@ -1,7 +1,4 @@
-qd-ajax
-=======
-
-[![Build Status](https://travis-ci.org/instructure/qd-ajax.png)](https://travis-ci.org/instructure/qd-ajax)
+# qd-ajax
 
 Ember-friendly `jQuery.ajax` wrapper.
 
@@ -9,34 +6,29 @@ Ember-friendly `jQuery.ajax` wrapper.
 - makes apps more testable (resolves promises with `Ember.run`)
 - makes testing ajax simpler with fixture support
 
-Installation
-------------
+## Installation
 
-`bower install qd-ajax`
+### Browser Package
 
-... or ...
+1. `bower install --save qd-ajax`
+2. link to global or AMD build in Bower Components directory
+    * Global - ```<script src="/bower_components/qd-ajax/dist/qd-ajax.js"></script>```
+    * AMD - ```<script src="/bower_components/qd-ajax/dist/qd-ajax.amd.js"></script>```
 
-`npm install qd-ajax`
+### Server Side Package
 
-Module Support
---------------
+Server side package is a [Broccoli.js](https://github.com/broccolijs/broccoli) plugin that concatinates all of the fixtures into a single file that you can consume in your browser app.  
 
-Note the `dist` directory has multiple module formats, use whatever
-works best for you.
+`npm install --save-dev qd-ajax`
 
-- AMD
+In your Brocfile.js
 
-  `define(['qd-ajax'], function(ajax) {});`
+```javascript
+var concatFixtures = require('qd-ajax');
 
-- Node.JS (CJS)
-
-  `var ajax = require('qd-ajax')`
-
-- Globals
-
-  `var ajax = qd.ajax;`
-
-  All instructure canvas stuff lives on the `ic` global.
+// concatFixtures( inputTree, moduleName, outputFile )
+return concatFixtures('fixtures', 'fixtures', '/fixtures.js');
+```
 
 API
 ---
