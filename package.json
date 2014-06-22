@@ -3,6 +3,7 @@
   "version": "1.4.3",
   "description": "Ember friendly $.ajax wrapper with extended fixtures support",
   "main": "dist/node/main.js",
+  "ember-addon-main": "dist/node/ember-cli-qd-ajax",
   "scripts": {
     "test": "node_modules/.bin/bower install && rm -rf dist && node_modules/.bin/broccoli build dist && node_modules/.bin/karma start --browsers Firefox --single-run",
     "release": "npm test && node_modules/.bin/release"
@@ -16,7 +17,6 @@
     "ajax",
     "ember-addon"
   ],
-  "ember-cli-addon-main": "dist/node/ember-cli-qd-ajax",
   "author": "Taras Mankovski (forked from ic-ajax by Ryan Florence)",
   "license": "MIT",
   "bugs": {
