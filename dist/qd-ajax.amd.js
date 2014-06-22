@@ -143,8 +143,10 @@ define("qd-ajax",
         var fixture = lookupFixture(settings.url, settings);
         if (fixture) {
           if (fixture.textStatus === 'success') {
+            Em.Logger.info('qd-ajax: Responded to %@ with success and '.fmt( settings.url), fixture);
             return Ember.run(null, resolve, fixture);
           } else {
+            Em.Logger.info('qd-ajax: Responded to %@ with error and '.fmt( settings.url), fixture);
             return Ember.run(null, reject, fixture);
           }
         }
