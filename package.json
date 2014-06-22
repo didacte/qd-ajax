@@ -16,6 +16,7 @@
     "ajax",
     "ember-addon"
   ],
+  "ember-cli-addon-main": "dist/node/ember-cli-qd-ajax",
   "author": "Taras Mankovski (forked from ic-ajax by Ryan Florence)",
   "license": "MIT",
   "bugs": {

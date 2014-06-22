@@ -44,7 +44,7 @@ var globalizedAMD = globalizeAMD(concatFiles(mergedTrees, {
 
 var concatFixtures = pickFiles(lib, {
   srcDir: '/',
-  files: ['concat-fixtures.js'],
+  files: ['concat-fixtures.js', 'ember-cli-qd-ajax.js'],
   destDir: '/node'
 });
 
