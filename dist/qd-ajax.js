@@ -194,7 +194,7 @@ define("qd-ajax",
 
       if (Em.typeOf(fixture) === 'function') {
         callback =  function() {
-          var result = fixture.apply(null, arguments);
+          var result = fixture.apply(__context__, arguments);
           if (typeof result !== 'undefined') {
             return JSON.parse(JSON.stringify(result));
           } else {
@@ -250,7 +250,7 @@ define("qd-ajax",
         settings.error = makeError(reject);
         Ember.$.ajax(settings);
       }, 'qd-ajax: ' + (settings.type || 'GET') + ' to ' + settings.url);
-    };
+    }
 
     function parseArgs() {
       var settings = {};
@@ -307,6 +307,27 @@ define("qd-ajax",
           }
         });
       });
+    }
+
+    var __context__ = {
+        /**
+         * Delay the response by amount of time specified by time argument. Default 250ms.
+         * Return a promise.
+         * @param payload {Object|Promise}
+         * @param time {Integer}
+         * @returns {exports.Promise}
+         */
+        delay: function(payload, time) {
+          if (typeof time === 'undefined') {
+            time = 250;
+          }
+
+          return new Ember.RSVP.Promise(function(resolve){
+            Ember.run.later(function(){
+              resolve(payload);
+            }, time);
+          }, null, "qd-ajax: Delay fixture response.")
+        }
     }
   });
 define("route-recognizer", 

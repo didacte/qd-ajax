@@ -1,3 +1,5 @@
+var qd = window.qd;
+
 module('qd-ajax', {
   teardown: function() {
     qd.ajax.resetFixtures();
@@ -187,6 +189,17 @@ asyncTest('Return undefined to skip fixture', function(){
   server.restore();
 });
 
+test('Delay function is available in handler context.', function(){
+  expect(2);
+
+  qd.ajax.defineFixture('/foo', function(){
+    ok(this.delay);
+    equal(Em.typeOf(this.delay), 'function');
+  });
+
+  qd.ajax.lookupFixture('/foo');
+});
+
 if (parseFloat(Ember.VERSION) >= 1.3) {
   function promiseLabelOf(promise) {
     return promise._label;
@@ -213,4 +226,6 @@ function fakeServer(method, url, response) {
   ]);
   return server;
 }
+
+
 

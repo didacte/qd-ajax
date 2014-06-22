@@ -30,8 +30,8 @@ var concatFixtures = require('qd-ajax');
 return concatFixtures('fixtures', 'fixtures', '/fixtures.js');
 ```
 
-API
----
+## API
+
 
 This lib simply wraps `jQuery.ajax` with two exceptions:
 
@@ -60,8 +60,7 @@ ajax.raw('/foo').then(function(result) {
 });
 ```
 
-Ember Data
-------------------
+## Ember Data
 
 By default, if Ember Data is on the page, qd-ajax will override the
 `RESTAdapter`'s `ajax` method to use qd-ajax instead of jQuery's ajax.
@@ -69,8 +68,7 @@ By default, if Ember Data is on the page, qd-ajax will override the
 To opt out of the behavior, you can set `ic.ajax.request.OVERRIDE_REST_ADAPTER = false`
 after loading qd-ajax.
 
-Simplified Testing
-------------------
+## Simplified Testing
 
 In order to test newly added code you must rebuild the distribution.
 
@@ -84,7 +82,7 @@ you to test your app without creating fake servers with sinon, etc.
 
 Example:
 
-```js
+```javascript
 qd.ajax.defineFixture('api/v1/courses', {
   response: [{name: 'basket weaving'}],
   jqXHR: {},
@@ -98,6 +96,21 @@ qd.ajax.request('api/v1/courses').then(function(result) {
 
 To test failure paths, set the `textStatus` to anything but `success`.
 
+## Fixture Helpers
+
+### delay(payload, [time]) 
+
+Delay helper returns promise that will resolve after period of time specified by **time** parameter. The time parameter is optional and defaults to 250ms.
+
+```javascript
+qd.ajax.defineFixture('api/v1/cources', function(){
+  return this.delay({
+    response: [{name: 'basket weaving'}],
+    jqXHR: {},
+    textStatus: 'success'
+  }, 300);
+});
+```
 
 Contributing
 ------------
