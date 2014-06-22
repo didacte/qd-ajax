@@ -189,14 +189,41 @@ asyncTest('Return undefined to skip fixture', function(){
   server.restore();
 });
 
-test('Delay function is available in handler context.', function(){
-  expect(2);
+test('helpers', function() {
+  expect(3);
 
   qd.ajax.defineFixture('/foo', function(){
-    ok(this.delay);
     equal(Em.typeOf(this.delay), 'function');
+    equal(Em.typeOf(this.success), 'function');
+    equal(Em.typeOf(this.error), 'function');
   });
 
+  qd.ajax.lookupFixture('/foo');
+});
+
+test('helpers#success', function(){
+  qd.ajax.defineFixture('/foo', function(){
+    deepEqual(this.success({foo:'bar'}), {
+      response: {foo: 'bar'},
+      textStatus: 'success'
+    });
+  });
+  qd.ajax.lookupFixture('/foo');
+});
+
+test('helpers#error', function(){
+  qd.ajax.defineFixture('/foo', function(){
+    deepEqual(this.error(), {
+      textStatus: 'error',
+      errorThrown: void 0
+    });
+
+    var error = new Error('You messed up');
+    deepEqual(this.error('error', error), {
+      textStatus: 'error',
+      errorThrown: error
+    })
+  });
   qd.ajax.lookupFixture('/foo');
 });
 

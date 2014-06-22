@@ -103,7 +103,7 @@ To test failure paths, set the `textStatus` to anything but `success`.
 Delay helper returns promise that will resolve after period of time specified by **time** parameter. The time parameter is optional and defaults to 250ms.
 
 ```javascript
-qd.ajax.defineFixture('api/v1/cources', function(){
+qd.ajax.defineFixture('api/v1/courses', function(){
   return this.delay({
     response: [{name: 'basket weaving'}],
     jqXHR: {},
@@ -111,6 +111,25 @@ qd.ajax.defineFixture('api/v1/cources', function(){
   }, 300);
 });
 ```
+
+### success(payload)
+
+Return jQuery.ajax compatible success response.
+
+```javascript
+qd.ajax.defineFixture('api/v1/courses', function() {
+  return this.success([{name: 'basket weaving'}]);
+});
+```
+
+### error([textStatus], [errorThrown])
+
+Return jQuery.ajax compatible error response.
+
+```javascript
+qd.ajax.defineFixture('api/v1/courses', function() {
+  return this.error();
+});
 
 Contributing
 ------------

@@ -310,25 +310,37 @@ define("qd-ajax",
     }
 
     var __context__ = {
-        /**
-         * Delay the response by amount of time specified by time argument. Default 250ms.
-         * Return a promise.
-         * @param payload {Object|Promise}
-         * @param time {Integer}
-         * @returns {exports.Promise}
-         */
-        delay: function(payload, time) {
-          if (typeof time === 'undefined') {
-            time = 250;
-          }
-
-          return new Ember.RSVP.Promise(function(resolve){
-            Ember.run.later(function(){
-              resolve(payload);
-            }, time);
-          }, null, "qd-ajax: Delay fixture response.")
+      /**
+       * Delay the response by amount of time specified by time argument. Default 250ms.
+       * Return a promise.
+       * @param payload {Object|Promise}
+       * @param time {Integer}
+       * @returns {exports.Promise}
+       */
+      delay: function(payload, time) {
+        if (typeof time === 'undefined') {
+          time = 250;
         }
-    }
+
+        return new Ember.RSVP.Promise(function(resolve){
+          Ember.run.later(function(){
+            resolve(payload);
+          }, time);
+        }, null, "qd-ajax: Delay fixture response.")
+      },
+      success: function(payload) {
+        return {
+          response: payload,
+          textStatus: 'success'
+        }
+      },
+      error: function(textStatus, errorThrown) {
+        return {
+          textStatus: textStatus || 'error',
+          errorThrown: errorThrown
+        }
+      }
+    };
   });
 define("route-recognizer", 
   ["exports"],
