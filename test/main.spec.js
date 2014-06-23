@@ -1,7 +1,8 @@
 var qd = window.qd;
 
 module('qd-ajax', {
-  teardown: function() {
+  setup: function() {
+    qd.ajax.request.DELAY_RESPONSE = false;
     qd.ajax.resetFixtures();
   }
 });
@@ -225,6 +226,51 @@ test('helpers#error', function(){
     })
   });
   qd.ajax.lookupFixture('/foo');
+});
+
+module('qd-ajax with DELAY_RESPONSE=true', {
+  setup: function() {
+    qd.ajax.request.DELAY_RESPONSE = true;
+    qd.ajax.request.DELAY_TIME = 250;
+    qd.ajax.resetFixtures();
+  }
+});
+
+asyncTest('response are delayed by default', function(){
+  expect(2);
+  qd.ajax.defineFixture('/foo', function(){
+    return this.success({foo: 'bar'});
+  });
+  var before, after;
+  before = new Date();
+  qd.ajax.request('/foo')
+    .then(function(payload){
+      start();
+      equal(payload.foo, 'bar');
+      after = new Date();
+      ok( (after - before) > qd.ajax.request.DELAY_TIME );
+    }, function() {
+      start();
+      ok(false, 'this test should not have triggered a promise rejection');
+    });
+});
+
+asyncTest('response delay time can be set', function(){
+  expect(3);
+  qd.ajax.defineFixture('/foo', function(){
+    return this.success({foo: 'bar'});
+  });
+  var before, after;
+  before = new Date();
+  qd.ajax.request.DELAY_TIME = 3000;
+  qd.ajax.request('/foo')
+    .then(function(payload){
+      start();
+      equal(qd.ajax.request.DELAY_TIME, 3000);
+      equal(payload.foo, 'bar');
+      after = new Date();
+      ok( (after - before) > 3000);
+    })
 });
 
 if (parseFloat(Ember.VERSION) >= 1.3) {

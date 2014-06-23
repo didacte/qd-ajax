@@ -124,6 +124,8 @@ define("qd-ajax",
     }
 
     __exports__.request = request;request.OVERRIDE_REST_ADAPTER = true;
+    request.DELAY_RESPONSE = false;
+    request.DELAY_TIME = 250;
 
     __exports__["default"] = request;
 
@@ -240,13 +242,21 @@ define("qd-ajax",
       return new Ember.RSVP.Promise(function(resolve, reject) {
         var fixture = lookupFixture(settings.url, settings);
         if (fixture) {
+          var callback;
           if (fixture.textStatus === 'success') {
             Em.Logger.info('qd-ajax: Responded to %@ with success.'.fmt( settings.url), fixture);
-            return Ember.run(null, resolve, fixture);
+            callback = resolve;
           } else {
             Em.Logger.info('qd-ajax: Responded to %@ with error.'.fmt( settings.url), fixture);
+            callback = reject;
             return Ember.run(null, reject, fixture);
           }
+          if (request.DELAY_RESPONSE) {
+            Ember.run.later(null, callback, fixture, request.DELAY_TIME);
+          } else {
+            Ember.run(null, callback, fixture);
+          }
+          return;
         }
         settings.success = makeSuccess(resolve);
         settings.error = makeError(reject);

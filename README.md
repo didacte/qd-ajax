@@ -32,7 +32,6 @@ return concatFixtures('fixtures', 'fixtures', '/fixtures.js');
 
 ## API
 
-
 This lib simply wraps `jQuery.ajax` with two exceptions:
 
 - success and error callbacks are not supported
@@ -68,13 +67,7 @@ By default, if Ember Data is on the page, qd-ajax will override the
 To opt out of the behavior, you can set `ic.ajax.request.OVERRIDE_REST_ADAPTER = false`
 after loading qd-ajax.
 
-## Simplified Testing
-
-In order to test newly added code you must rebuild the distribution.
-
-```bash
-broccoli build dist
-```
+## Simplified Testing with Fixtures
 
 Adding fixtures with `defineFixture` tells qd-ajax to resolve the promise
 with the fixture matching a url instead of making a request. This allows
@@ -95,6 +88,18 @@ qd.ajax.request('api/v1/courses').then(function(result) {
 ```
 
 To test failure paths, set the `textStatus` to anything but `success`.
+
+You can reset defined fixtures between tests with ```qd.ajax.resetFixtures()```.
+
+```javascript
+module('testing calls', {
+  setup: function() {
+    qd.ajax.resetFixtures();
+  }
+});
+```
+
+By default, qd.ajax resolves responses synchronously. To simulate real world asynchronous requests, you can use the [delay](#delaypayload-time) helper or activate default delay with ```qd.ajax.request.DELAY_RESPONSE=true```. You can also set the default delay time with ```qd.ajax.request.DELAY_TIME=3000;```;
 
 ## Fixture Helpers
 
@@ -131,8 +136,7 @@ qd.ajax.defineFixture('api/v1/courses', function() {
   return this.error();
 });
 
-Contributing
-------------
+## Contributing
 
 Install dependencies and run tests with the following:
 
@@ -147,14 +151,12 @@ For those of you with release privileges:
 npm run-script release
 ```
 
-Special Thanks
---------------
+## Special Thanks
 
 Forked from [ic-ajax by Instructure][2].
 Original code inspired by [discourse ajax][1].
 
-License and Copyright
----------------------
+## License and Copyright
 
 MIT Style license
 
