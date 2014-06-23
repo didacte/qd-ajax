@@ -64,7 +64,7 @@ ajax.raw('/foo').then(function(result) {
 By default, if Ember Data is on the page, qd-ajax will override the
 `RESTAdapter`'s `ajax` method to use qd-ajax instead of jQuery's ajax.
 
-To opt out of the behavior, you can set `ic.ajax.request.OVERRIDE_REST_ADAPTER = false`
+To opt out of the behavior, you can set `qd.ajax.request.OVERRIDE_REST_ADAPTER = false`
 after loading qd-ajax.
 
 ## Simplified Testing with Fixtures
@@ -135,6 +135,7 @@ Return jQuery.ajax compatible error response.
 qd.ajax.defineFixture('api/v1/courses', function() {
   return this.error();
 });
+```
 
 ## Contributing
 
