@@ -130,6 +130,7 @@ Return jQuery.ajax compatible error response.
 qd.ajax.defineFixture('api/v1/courses', function() {
   return this.error();
 });
+```
 
 Contributing
 ------------
