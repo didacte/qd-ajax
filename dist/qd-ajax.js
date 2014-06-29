@@ -156,8 +156,8 @@ define("qd-ajax",
       if (typeof namespace === 'undefined') {
         namespace = '';
       }
-      if (requireModule) {
-        for (var key in requireModule.entries) {
+      if (window.requireModule) {
+        for (var key in window.requireModule.entries) {
           if (key !== moduleName + '/_loader' && new RegExp('^' + moduleName + '\/').test(key)) {
             var url = key.replace(moduleName + '/', '');
             var module = requireModule(key);
