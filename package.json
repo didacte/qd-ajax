@@ -1,6 +1,6 @@
 {
   "name": "qd-ajax",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Ember friendly $.ajax wrapper with extended fixtures support",
   "main": "dist/node/main.js",
   "ember-addon-main": "dist/node/ember-cli-qd-ajax",
