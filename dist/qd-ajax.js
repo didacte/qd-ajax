@@ -232,7 +232,19 @@ define("qd-ajax",
         var route = matched[0];
         // merge route parameters, route query parameters
         var urlParams = Em.merge(route.params, matched.queryParams || {});
-        var params = Em.merge(urlParams, (request || {}).data);
+        var data = (request || {}).data;
+        /**
+         * Sometimes Ember Data will pass data object as a serialized JSON string.
+         * In these situations, parse the JSON before passing to the fixture handler.
+         */
+        if (Em.typeOf(data) === 'string') {
+          try {
+            data = JSON.parse(data);
+          } catch (e){
+            Em.Logger.error('Error occurred while trying parse serialized data string', e);
+          }
+        }
+        var params = Em.merge(urlParams, data);
         return route.handler.call(null, params, request);
       }
       return null;

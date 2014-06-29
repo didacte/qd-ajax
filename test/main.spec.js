@@ -228,6 +228,26 @@ test('helpers#error', function(){
   qd.ajax.lookupFixture('/foo');
 });
 
+test('POSTing a serialized JSON object results in object', function(){
+  expect(3);
+
+  qd.ajax.defineFixture('/foo', function(params){
+    equal(Em.typeOf(params), 'object');
+    equal(Em.keys(params).length, 1);
+    equal(params.foo, 'baz');
+
+    return this.success(params);
+  });
+
+  qd.ajax.request({
+    url: '/foo',
+    data: JSON.stringify({foo: 'baz'}),
+    type: 'POST',
+    contentType: 'json'
+  });
+
+});
+
 module('qd-ajax with DELAY_RESPONSE=true', {
   setup: function() {
     qd.ajax.request.DELAY_RESPONSE = true;
