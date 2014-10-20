@@ -248,6 +248,30 @@ test('POSTing a serialized JSON object results in object', function(){
 
 });
 
+asyncTest('Specifying response code in fixture is passed on to response', function(){
+  expect(2);
+
+  qd.ajax.defineFixture('/foo', function(){
+    return {
+      response: { foo: 'bar' },
+      textStatus: 'Unprocessable Entity',
+      jqXHR: {
+        status: 422
+      }
+    }
+  });
+
+  qd.ajax.request('/foo')
+    .then(function(){
+      start();
+      ok(false, 'the response was suppose to fail');
+    }, function(error){
+      start();
+      equal(error.jqXHR.status, 422);
+      equal(error.textStatus, 'Unprocessable Entity');
+    });
+});
+
 module('qd-ajax with DELAY_RESPONSE=true', {
   setup: function() {
     qd.ajax.request.DELAY_RESPONSE = true;
