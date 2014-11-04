@@ -25,7 +25,7 @@ module.exports = {
       }
     });
 
-    if (app.env === 'development') {
+    if (app.name === 'dummy' && app.env === 'development') {
       app.import(app.bowerDirectory + '/sinon/index.js');
     }
   }
