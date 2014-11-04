@@ -1,58 +1,20 @@
-var pickFiles = require('broccoli-static-compiler');
-var concatFiles = require('broccoli-concat');
-var mergeTrees = require('broccoli-merge-trees');
-var transpileES6 = require('broccoli-es6-module-transpiler');
-var globalizeAMD = require('broccoli-globalize-amd');
-var moveFile = require('broccoli-file-mover');
-var path = require('path');
+/* global require, module */
 
-function getModuleName(filePath) {
-  return filePath.replace(/.js$/, '');
-}
+var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
-var lib = 'lib';
+var app = new EmberAddon();
 
-var main = pickFiles(lib, {
-  srcDir: '/',
-  files: ['main.js'],
-  destDir: '/'
-});
+// Use `app.import` to add additional libraries to the generated
+// output files.
+//
+// If you need to use different assets in different
+// environments, specify an object as the first parameter. That
+// object's keys should be the environment name and the values
+// should be the asset to use in that environment.
+//
+// If the library that you are including contains AMD or ES6
+// modules that you would like to import into your application
+// please specify an object with the list of modules as keys
+// along with the exports of each module as its value.
 
-var transpiledLib = transpileES6(main, { moduleName: 'qd-ajax' });
-
-var bower = path.join(__dirname, 'bower_components');
-var routeRecognizer = pickFiles(bower, {
-  srcDir: 'route-recognizer/dist',
-  files: ['route-recognizer.amd.js'],
-  destDir: '/'
-});
-
-var mergedTrees = mergeTrees([transpiledLib, routeRecognizer]);
-
-var concatedFiles = concatFiles(mergedTrees, {
-  inputFiles: ['**/*.js'],
-  outputFile: '/qd-ajax.amd.js'
-});
-
-var globalizedAMD = globalizeAMD(concatFiles(mergedTrees, {
-  inputFiles: ['**/*.js'],
-  outputFile: '/qd-ajax.js'
-}), {
-  namespace: 'qd = (global.qd || {}); global.qd.ajax',
-  moduleName: 'qd-ajax'
-});
-
-var concatFixtures = pickFiles(lib, {
-  srcDir: '/',
-  files: ['concat-fixtures.js', 'ember-cli-qd-ajax.js'],
-  destDir: '/node'
-});
-
-var nodeMain = moveFile(concatFixtures, {
-  files: {
-    'node/concat-fixtures.js': 'node/main.js'
-  }
-});
-
-module.exports = mergeTrees([globalizedAMD, concatedFiles, nodeMain]);
-
+module.exports = app.toTree();
