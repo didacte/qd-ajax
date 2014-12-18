@@ -95,8 +95,8 @@ Fixtures.reopenClass({
       if (key !== moduleName + '/_loader' && new RegExp('^' + moduleName + '\/').test(key)) {
         var url = key.replace(moduleName + '/', '');
         var module = requireModule(key);
-        if (module && module.default) {
-          fixtures.add(namespace + '/' + url, module.default);
+        if (module && module['default']) {
+          fixtures.add(namespace + '/' + url, module['default']);
         }
       }
     }
