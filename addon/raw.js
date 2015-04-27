@@ -39,12 +39,12 @@ export function makePromise(settings) {
       } else {
         Ember.Logger.info('qd-ajax: Responded to %@ with error.'.fmt(settings.url), fixture);
         callback = reject;
-        return Ember.run(null, reject, fixture);
+        return Ember.run.later(null, reject, fixture);
       }
       if (config.DELAY_RESPONSE) {
         Ember.run.later(null, callback, fixture, config.DELAY_TIME);
       } else {
-        Ember.run(null, callback, fixture);
+        Ember.run.later(null, callback, fixture);
       }
       return;
     }
